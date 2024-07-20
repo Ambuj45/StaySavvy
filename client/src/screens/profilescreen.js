@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Loader from "../components/Loader";
 import Error from "../components/Error";
-
+import Swal from "sweetalert2";
 import { Tabs } from "antd";
+import { Tag } from "antd";
 
 const { TabPane } = Tabs;
 
@@ -64,6 +65,24 @@ export function MyBookings() {
     }
   }, []); // Empty dependency array ensures this runs only once
 
+  async function cancelBooking(bookingid, roomid) {
+    try {
+      setLoading(true);
+      const res = await (
+        await axios.post("/api/bookings/cancelbooking", { bookingid, roomid })
+      ).data;
+      console.log(res);
+      setLoading(false);
+      Swal.fire("Congrats", "Booking Cancelled Successfully!", "success").then(
+        (res) => window.location.reload()
+      );
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      Swal.fire("Oops! ", "Something went wrong", "error");
+    }
+  }
+
   return (
     <div>
       <div className="row md-6">
@@ -88,13 +107,26 @@ export function MyBookings() {
                   <b>Amount</b>:{booking.totalamount}
                 </p>
                 <p>
-                  <b>status</b>:
-                  {booking.status == "booked" ? "conformed" : "cancel"}
+                <b>Status</b> :{" "}
+                    {booking.status === "booked" ? (
+                      <Tag color="green">Confirmed</Tag>
+                    ) : (
+                      <Tag color="red">Cancelled</Tag>
+                    )}
                 </p>
 
-                <div className="text-right">
-                  <button className="btn btn-primary">Cancel Booking</button>
-                </div>
+                {booking.status !== "cancelled" && (
+                  <div className="text-right">
+                    <button
+                      className="btn btn-primary"
+                      onClick={() => {
+                        cancelBooking(booking._id, booking.roomid);
+                      }}
+                    >
+                      CANCEL BOOKING
+                    </button>
+                  </div>
+                )}
               </div>
             ))}
         </div>

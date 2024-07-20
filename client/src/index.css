@@ -63,11 +63,31 @@ input,select{
 }
 
 h2{
-  font-size:30px !important;
+  font-size:30px;
   padding:10px;
-  font-weight: bold !important;
+  font-weight: bold;
   text-align: center;
 }
 .dropdown-toggle{
   border:0px solid black !important;
+}
+.ant-picker-input input {
+  border: none !important;
+}
+
+.landing {
+  background: black !important;
+  height: 100vh;
+}
+
+.landing-btn {
+  background-color: white;
+  color: black !important;
+  margin-top: 20px;
+  padding: 3px 4px;
+  border-radius: 3px;
+}
+
+.landing .col-md-12 {
+  border-right: 5px solid white !important;
 }

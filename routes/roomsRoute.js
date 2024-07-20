@@ -21,4 +21,14 @@ router.post("/getroombyid", async (req, res) => {
     return res.status(400).json({ messsage: error });
   }
 });
+
+router.post("/addroom", async (req, res) => {
+  try {
+    const newRoom = new Room(req.body);
+    await newRoom.save();
+    res.send("New Room added Successfully");
+  } catch (error) {
+    return res.status(400).json({ error });
+  }
+});
 module.exports = router;
